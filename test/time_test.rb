@@ -2,7 +2,22 @@ require_relative 'test_helper'
 
 context "Lightswitch::Schedules" do
 
-  context "#create_daily_uptime_schedule" do
+  context "#create_daily_uptime_schedule given only start time" do
+    setup { Lightswitch::Schedules.new }
+
+    asserts("create a 9 AM start daily schedule") {
+      topic.create_daily_uptime_schedule(start: "0900").up? Time.new(2015, 4, 19, 9, 0, 0)
+      topic.create_daily_uptime_schedule(start: "2300").up? Time.new(2015, 4, 19, 23, 59, 0)
+    }
+
+    denies("create a 9 AM start daily schedule") {
+      topic.create_daily_uptime_schedule(start: "0900").up? Time.new(2015, 4, 19, 8, 59, 0)
+      topic.create_daily_uptime_schedule(start: "0900").up? Time.new(2015, 4, 19, 1, 0, 0)
+    }
+
+  end
+
+  context "#create_daily_uptime_schedule given both start and end times" do
     setup { Lightswitch::Schedules.new }
 
     asserts("raises an error for invalid arguments when end hour is earlier than start hour") { topic.create_daily_uptime_schedule(start: "0900", end: "0859") }.raises(ArgumentError) { "Ending time cannot precede start time" }
