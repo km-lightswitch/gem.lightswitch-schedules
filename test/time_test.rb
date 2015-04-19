@@ -5,6 +5,10 @@ context "Lightswitch::Schedules" do
   context "#create_daily_uptime_schedule" do
     setup { Lightswitch::Schedules.new }
 
+    asserts("raises an error for invalid arguments when end hour is earlier than start hour") { topic.create_daily_uptime_schedule(start: "0900", end: "0859") }.raises(ArgumentError) { "Ending time cannot precede start time" }
+    asserts("raises an error for invalid arguments when end is same as start") { topic.create_daily_uptime_schedule(start: "0900", end: "0900") }.raises(ArgumentError) { "Ending time must follow start time" }
+    asserts("raises an error for invalid arguments when end is same earlier than start on the same hour") { topic.create_daily_uptime_schedule(start: "0923", end: "0922") }.raises(ArgumentError) { "Ending time must follow start time" }
+
     asserts("create a 9 AM to 7 PM daily schedule on the hours") {
       topic.create_daily_uptime_schedule(start: "0900", end: "1900").up? Time.new(2015, 4, 19, 9, 0, 0)
       topic.create_daily_uptime_schedule(start: "0900", end: "1900").up? Time.new(2015, 4, 19, 10, 0, 0)
