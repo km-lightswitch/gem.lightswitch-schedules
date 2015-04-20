@@ -33,5 +33,6 @@ context "ScheduleCollection has schedules" do
   }
 
   asserts("save schedule collection with schedule works") { Lightswitch::ScheduleCollection.get(topic.id).schedules.first.end_hour == 18 }
+  asserts("saved schedule collection with schedule responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).schedules.first.up?(Time.new(2015, 4, 20, 13, 1, 0))}
 
 end

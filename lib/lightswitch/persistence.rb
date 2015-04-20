@@ -1,4 +1,5 @@
 require 'data_mapper'
+require_relative 'schedule_mixin'
 
 module Lightswitch
 
@@ -18,7 +19,7 @@ module Lightswitch
 
 
   class Schedule
-    include DataMapper::Resource
+    include DataMapper::Resource, ScheduleMixin
 
     property :id, Serial
     property :start_hour, Integer, :required => true
