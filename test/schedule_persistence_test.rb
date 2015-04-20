@@ -14,19 +14,19 @@ end
 context "Lightswitch::ScheduleCollection" do
 
   setup {
-    schedule_collection = Lightswitch::ScheduleCollection.new
+    schedule_collection = Lightswitch::ScheduleCollection.new(name: 'test')
     schedule_collection.save
     schedule_collection
   }
 
-  asserts("save works") { topic.id }
+  asserts("save works") { Lightswitch::ScheduleCollection.get(topic.id).name == 'test' }
 
 end
 
 context "ScheduleCollection has schedules" do
   setup {
     daily_schedule = Lightswitch::Schedule.new(start_hour: 12, start_minutes: 23, end_hour: 18, end_minutes: 30)
-    schedule_collection = Lightswitch::ScheduleCollection.new
+    schedule_collection = Lightswitch::ScheduleCollection.new(name: 'test')
     schedule_collection.schedules << daily_schedule
     schedule_collection.save
     schedule_collection

@@ -6,10 +6,12 @@ module Lightswitch
     include DataMapper::Resource
 
     property :id, Serial
+    property :name, String, :required => true
+
     has n, :schedules
 
     def to_s
-      "Schedule collection" + (schedules.empty? ? "" : " with schedules: " + schedules.collect(&:to_s).join("\n"))
+      "Schedule collection #{name}" + (schedules.empty? ? "" : " with schedules: " + schedules.collect(&:to_s).join("\n"))
     end
 
   end
