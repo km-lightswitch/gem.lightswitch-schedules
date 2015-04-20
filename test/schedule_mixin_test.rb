@@ -1,10 +1,10 @@
 require_relative 'test_helper'
 
 class IncludesTimeUtility
-  include Lightswitch::TimeUtility
+  include Lightswitch::ScheduleCreation
 end
 
-context "Lightswitch::TimeUtility" do
+context "Lightswitch::ScheduleMixin" do
 
   context "#get_hours_and_minutes" do
     setup { IncludesTimeUtility.new }

@@ -1,14 +1,31 @@
-require_relative 'daily_uptime_schedule'
+require_relative 'schedule_creation'
+require_relative 'persistence'
 
 module Lightswitch
 
   class Schedules
+    include ScheduleCreation
 
-    def create_daily_uptime_schedule(schedule_description)
-      start_time_of_day = schedule_description[:start]
-      end_time_of_day = schedule_description[:end] || nil
+    def make_schedule(schedule_description)
+      schedule_hash = to_schedule(schedule_description)
+      Lightswitch::Schedule.new(schedule_hash)
+    end
 
-      DailyUptimeSchedule.new(start_time_of_day, end_time_of_day)
+    def create_schedule_collection(schedules_description)
+      schedules = schedules_description[:schedules]
+      uptime_schedules = schedules.collect { |schedule_description|
+        make_schedule(schedule_description)
+      }
+      schedule_collection = Lightswitch::ScheduleCollection.new({name: schedules_description[:name]})
+      uptime_schedules.each { |schedule|
+        schedule_collection.schedules << schedule
+      }
+      schedule_collection.save
+      schedule_collection.id
+    end
+
+    def get_schedule_collection(id)
+      Lightswitch::ScheduleCollection.get(id)
     end
 
   end

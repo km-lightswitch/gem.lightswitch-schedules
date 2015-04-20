@@ -13,6 +13,7 @@ module Lightswitch
 
   module ScheduleMixin
 
+
     def up?(at_time)
       time_hour, time_minutes = at_time.hour, at_time.min
 
