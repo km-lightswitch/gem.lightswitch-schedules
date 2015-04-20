@@ -1,15 +1,18 @@
 module Lightswitch
   module ScheduleCollectionMixin
 
+
     def up?(at_time)
       !(schedules.any? { |schedule| schedule.down?(at_time) })
     end
+
 
     def down?(at_time)
       !up?(at_time)
     end
 
   end
+
 
   module ScheduleMixin
 
@@ -48,13 +51,13 @@ module Lightswitch
     end
 
 
-    def start_time_of_day;
-      "#{start_hour.to_s.rjust(2, '0')}:#{start_minutes.to_s.rjust(2, '0')}";
+    def start_time_of_day
+      "#{start_hour.to_s.rjust(2, '0')}:#{start_minutes.to_s.rjust(2, '0')}"
     end
 
 
-    def end_time_of_day;
-      (end_hour and end_minutes) ? "#{end_hour.to_s.rjust(2, '0')}:#{end_minutes.to_s.rjust(2, '0')}" : "end of day";
+    def end_time_of_day
+      (end_hour and end_minutes) ? "#{end_hour.to_s.rjust(2, '0')}:#{end_minutes.to_s.rjust(2, '0')}" : "end of day"
     end
 
   end

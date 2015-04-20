@@ -12,14 +12,17 @@ module Lightswitch
     end
 
     def create_schedule_collection(schedules_description)
+      schedule_collection = Lightswitch::ScheduleCollection.new({name: schedules_description[:name]})
+
       schedules = schedules_description[:schedules]
       uptime_schedules = schedules.collect { |schedule_description|
         make_schedule(schedule_description)
       }
-      schedule_collection = Lightswitch::ScheduleCollection.new({name: schedules_description[:name]})
+
       uptime_schedules.each { |schedule|
         schedule_collection.schedules << schedule
       }
+
       schedule_collection.save
       schedule_collection.id
     end
