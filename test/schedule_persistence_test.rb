@@ -48,6 +48,10 @@ context "ScheduleCollection has multiple daily uptime schedules" do
     schedule_collection
   }
 
-  asserts("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).schedules.first.up?(Time.new(2015, 4, 20, 14, 12, 0))}
+  asserts("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 12, 0))}
+  asserts("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 40, 0))}
+
+  denies("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 7, 0))}
+  denies("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 43, 0))}
 
 end
