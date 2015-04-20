@@ -4,7 +4,7 @@ require_relative 'schedule_mixin'
 module Lightswitch
 
   class ScheduleCollection
-    include DataMapper::Resource
+    include DataMapper::Resource, ScheduleCollectionMixin
 
     property :id, Serial
     property :name, String, :required => true
