@@ -48,10 +48,13 @@ context "ScheduleCollection has multiple daily uptime schedules" do
     schedule_collection
   }
 
-  asserts("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 12, 0))}
-  asserts("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 40, 0))}
+  asserts("saved schedule collection with multiple schedules responds to up? for restrictive case closer to start time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 12, 0))}
+  asserts("saved schedule collection with multiple schedules responds to up? for restrictive case closer to end time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 40, 0))}
+  asserts("saved schedule collection with multiple schedules responds to up? for case ok with all schedules") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 15, 40, 0))}
 
-  denies("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 7, 0))}
-  denies("saved schedule collection responds to up?") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 43, 0))}
+  denies("saved schedule collection with multiple schedules responds to up? for case where time does not qualify from all schedules, for closer to start time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 14, 7, 0))}
+  denies("saved schedule collection with multiple schedules responds to up? for case where time does not qualify from all schedules, for closer to end time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 17, 43, 0))}
+  denies("saved schedule collection with multiple schedules responds to up? for case not ok with all schedules, earlier than earliest start time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 11, 43, 0))}
+  denies("saved schedule collection with multiple schedules responds to up? for case not ok with all schedules, later than latest start time") { Lightswitch::ScheduleCollection.get(topic.id).up?(Time.new(2015, 4, 20, 19, 11, 0))}
 
 end
