@@ -4,7 +4,7 @@ class IncludesTimeUtility
   include Lightswitch::ScheduleCreation
 end
 
-context "Lightswitch::ScheduleMixin" do
+context "Lightswitch::ScheduleCreation" do
 
   context "#get_hours_and_minutes" do
     setup { IncludesTimeUtility.new }

@@ -1,5 +1,5 @@
 require 'data_mapper'
-require_relative 'schedule_mixin'
+require_relative 'schedule_mixins'
 
 module Lightswitch
 

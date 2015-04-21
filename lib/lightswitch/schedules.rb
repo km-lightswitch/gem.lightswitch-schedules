@@ -1,5 +1,6 @@
 require_relative 'schedule_creation'
-require_relative 'persistence'
+require_relative 'models'
+require_relative 'constants'
 
 module Lightswitch
 
@@ -7,9 +8,9 @@ module Lightswitch
     include ScheduleCreation
 
     def make_schedule(schedule_description)
-      schedule_hash = to_schedule(schedule_description)
-      Lightswitch::Schedule.new(schedule_hash)
+      Lightswitch::Schedule.new(from_h(schedule_description))
     end
+
 
     def create_schedule_collection(schedules_description)
       schedule_collection = Lightswitch::ScheduleCollection.new({name: schedules_description[:name]})
@@ -27,8 +28,20 @@ module Lightswitch
       schedule_collection.id
     end
 
+
     def get_schedule_collection(id)
       Lightswitch::ScheduleCollection.get(id)
+    end
+
+
+    def get_scheduled_state_changes(state, from_time, to_time, schedules_id)
+      [from_time, to_time].collect { |time| get_scheduled_state_change_at_time(state, time, schedules_id) }
+    end
+
+
+    def get_scheduled_state_change_at_time(state, at_time, schedules_id)
+      schedule_collection = Lightswitch::ScheduleCollection.get(schedules_id)
+      schedule_collection.get_schedule_state_change(state, at_time)
     end
 
   end

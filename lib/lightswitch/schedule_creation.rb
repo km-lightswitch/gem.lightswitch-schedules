@@ -17,7 +17,7 @@ module Lightswitch
     end
 
 
-    def to_schedule(schedule_description)
+    def from_h(schedule_description)
       start_time_of_day = schedule_description[:start]
       start_hour, start_minutes = get_hours_and_minutes(start_time_of_day)
 

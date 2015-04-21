@@ -47,12 +47,24 @@ context "Lightswitch::Schedules" do
     setup {
       schedule_description = {
           :name => 'test',
-          :schedules => [{ start: '1100', end: '1230' }]
+          :schedules => [{start: '1100', end: '1230'}]
       }
       Lightswitch::Schedules.new.create_schedule_collection(schedule_description)
     }
 
     asserts("constructs, persists, and retrieves a schedule collection by id given a description of schedules") { Lightswitch::Schedules.new.get_schedule_collection(topic).up? Time.new(2015, 4, 20, 11, 35, 0) }
+  end
+
+  context "#get_scheduled_state_change_at_time" do
+    setup {
+      schedule_description = {
+          :name => 'test',
+          :schedules => [{start: '1100', end: '1230'}]
+      }
+      Lightswitch::Schedules.new.create_schedule_collection(schedule_description)
+    }
+    asserts("indicates a state change of up") { Lightswitch::Schedules.new.get_scheduled_state_change_at_time("down", Time.new(2015, 4, 21, 11, 40, 0), topic).equal? Lightswitch::StateChange.new("up", Time.new(2015, 4, 21, 11, 40, 0)) }
+    asserts("indicates no state change") { Lightswitch::Schedules.new.get_scheduled_state_change_at_time("down", Time.new(2015, 4, 21, 10, 40, 0), topic).nil? }
   end
 
 end

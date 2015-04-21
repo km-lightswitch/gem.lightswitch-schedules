@@ -1,5 +1,28 @@
 module Lightswitch
+  module ScheduleCommon
+
+    def encode_state(up_boolean)
+      up_boolean ? 'up' : 'down'
+    end
+
+    def decode_state(state_string)
+      state_string == 'up'
+    end
+
+    def get_schedule_state_change(reference_state, at_time)
+      scheduled_state_encoded = encode_state(up?(at_time))
+      if (scheduled_state_encoded != reference_state)
+        StateChange.new(scheduled_state_encoded, at_time)
+      else
+        nil
+      end
+    end
+
+  end
+
+
   module ScheduleCollectionMixin
+    include ScheduleCommon
 
 
     def up?(at_time)
@@ -11,11 +34,31 @@ module Lightswitch
       !up?(at_time)
     end
 
+
+  end
+
+
+  class StateChange
+    attr_accessor :state, :at_time
+
+    def initialize(state_string, at_time)
+      @state, @at_time = state_string, at_time
+    end
+
+    def to_h
+      {state: state, at_time: at_time}
+    end
+
+    def to_s; to_h; end
+
+    def equal?(other)
+      other.is_a? StateChange and (other.state == state and other.at_time == at_time)
+    end
   end
 
 
   module ScheduleMixin
-
+    include ScheduleCommon
 
     def up?(at_time)
       time_hour, time_minutes = at_time.hour, at_time.min

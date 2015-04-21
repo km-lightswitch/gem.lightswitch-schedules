@@ -1,5 +1,5 @@
 require_relative '../lib/lightswitch/schedules'
-require_relative '../lib/lightswitch/persistence'
+require_relative '../lib/lightswitch/models'
 
 require 'data_mapper'
 require 'dm-migrations'
