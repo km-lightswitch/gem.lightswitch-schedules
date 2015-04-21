@@ -35,12 +35,21 @@ module Lightswitch
 
 
     def get_scheduled_state_changes(state, from_time, to_time, schedules_id)
-      [from_time, to_time].collect { |time| get_scheduled_state_change_at_time(state, time, schedules_id) }
+      at_from_time = get_scheduled_state_change_at_time(state, from_time, schedules_id)
+
+      state_for_to_time = at_from_time.nil? ? state : at_from_time.state
+      at_to_time = get_scheduled_state_change_at_time(state_for_to_time, to_time, schedules_id)
+
+      state_changes = []
+      state_changes << at_from_time if at_from_time
+      state_changes << at_to_time if at_to_time
+
+      state_changes
     end
 
 
     def get_scheduled_state_change_at_time(state, at_time, schedules_id)
-      schedule_collection = Lightswitch::ScheduleCollection.get(schedules_id)
+      schedule_collection = get_schedule_collection(schedules_id)
       schedule_collection.get_schedule_state_change(state, at_time)
     end
 

@@ -49,7 +49,7 @@ module Lightswitch
       {state: state, at_time: at_time}
     end
 
-    def to_s; to_h; end
+    def to_s; "State change to #{state} at #{at_time}"; end
 
     def equal?(other)
       other.is_a? StateChange and (other.state == state and other.at_time == at_time)

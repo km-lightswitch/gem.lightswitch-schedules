@@ -67,4 +67,20 @@ context "Lightswitch::Schedules" do
     asserts("indicates no state change") { Lightswitch::Schedules.new.get_scheduled_state_change_at_time("down", Time.new(2015, 4, 21, 10, 40, 0), topic).nil? }
   end
 
+  context "#get_scheduled_state_changes" do
+    setup {
+      schedule_description = {
+          :name => 'test',
+          :schedules => [{start: '1100', end: '1230'}]
+      }
+      id = Lightswitch::Schedules.new.create_schedule_collection(schedule_description)
+      Lightswitch::Schedules.new.get_scheduled_state_changes('down', Time.new(2015, 4, 22, 12, 28, 0), Time.new(2015, 4, 22, 12, 33, 0), id)
+    }
+
+    asserts("produces multiple state changes near a state change boundary") { topic.first.equal?(Lightswitch::StateChange.new('up', Time.new(2015, 4, 22, 12, 28, 0))) and topic.last.equal?(Lightswitch::StateChange.new('down', Time.new(2015, 4, 22, 12, 33, 0))) }
+    # asserts("gets no changes where none are applicable") {}
+    # asserts("gets a single change when only one is applicable") {}
+
+  end
+
 end
