@@ -2,3 +2,4 @@ bin/
 .bundle/
 *.gem
 .idea/
+Gemfile.lock
